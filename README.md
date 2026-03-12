@@ -21,6 +21,6 @@ _Using R and Other Tools for Bioinformatics Analysis_
 - Class 14 [RNA-Seq analysis mini-project](class14/class14.md)
 - Class 15 [Hands-on with Git and GitHub]()
 - Class 16 [Essential UNIX for bioinformatics]()
-- Class 17 [Analyzing sequencing data in the cloud]()
+- Class 17 [Analyzing sequencing data in the cloud](hw17/hw17.md)
 - Class 18 [Mini Project: Investigating Pertussis Resurgence](class18/class18.md)
 - Class 19 [Mini Project: Cancer Mutation Analysis]()
