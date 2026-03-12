@@ -1,0 +1,29 @@
+---
+title: "Class 19: Cancer Mutation Mini Project"
+author: "Kiana Bohanon (A17802316)"
+format: html
+---
+
+```{r}
+library(bio3d)
+
+seqs <- read.fasta("A17802316_mutant_seq.fa")
+
+seqs
+```
+
+We can score residue conservation
+```{r}
+cons <- conserv(seqs)
+mutation.sites <- which(cons < 1)
+
+paste(seqs$ali[1, mutation.sites], mutation.sites, seqs$ali[2, mutation.sites])
+```
+```{r}
+wt <- paste(seqs$ali[1,], collapse="")
+wt
+```
+```{r}
+cat(seqs$ali[1,])
+```
+
