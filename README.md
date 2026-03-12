@@ -6,13 +6,13 @@ My classwork for [BIMM 143](https://bioboot.github.io/bimm143_W26/) at UC San Di
 _Introductory material: Working with R_
 
 - Class 04 [Intro to R] 
-- Class 05 [Data visualization with ggplot](https://github.com/kbohanon23/bimm143_github/blob/main/class05/class05.md)
-- Class 06 [R functions and R packages from CRAN and BioConductor](https://github.com/kbohanon23/bimm143_github/blob/main/class06/class06.md)
+- Class 05 [Data visualization with ggplot](class05/class05.md)
+- Class 06 [R functions and R packages from CRAN and BioConductor](
 
 _Using R and Other Tools for Bioinformatics Analysis_
   
-- Class 07 [Introduction to machine learning for Bioinformatics](https://github.com/kbohanon23/bimm143_github/blob/main/class07/class07.md)
-- Class 08 [Breast Cancer Mini Project](https://github.com/kbohanon23/bimm143_github/blob/f9315422678266b4e33e2a2035756345cdf5e097/class08_miniproject/class08miniproject.md)
+- Class 07 [Introduction to machine learning for Bioinformatics](
+- Class 08 [Breast Cancer Mini Project](
 - Class 09 [Candy Mini-Project]()
 - Class 10 [Structural Bioinformatics (pt1)]()
 - Class 11 [Structural Bioinformatics (pt2. Focus on new AlphaFold2)]()
