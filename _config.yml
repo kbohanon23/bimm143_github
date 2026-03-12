@@ -1,8 +1,8 @@
 # Jekyll theme configuration
+theme: jekyll-theme-midnight
 
-# Provide your theme choices
-theme: minmal
-# markdown option (none, kramdown, redcarpet, rdiscount)
+# Markdown processor
 markdown: kramdown
-# permalink style
+
+# Permalink style
 permalink: pretty
