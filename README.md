@@ -5,7 +5,7 @@ My classwork for [BIMM 143](https://bioboot.github.io/bimm143_W26/) at UC San Di
 
 _Introductory material: Working with R_
 
-- Class 04 [Intro to R] 
+- Class 04 [Intro to R](class04/class04.pdf)
 - Class 05 [Data visualization with ggplot](class05/class05.md)
 - Class 06 [R functions and R packages from CRAN and BioConductor](class06/class06.md)
 
