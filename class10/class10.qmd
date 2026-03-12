@@ -122,11 +122,13 @@ aa <- get.seq( id )
 Next step: search the PDB database for all related entries:
 
 ```{r}
-blast <- blast.pdb(aa)
-hits <- plot(blast)
+#blast <- blast.pdb(aa)
+#hits <- plot(blast)
+hits <- NULL
+hits$pdb.id <- c('1AKE_A','6S36_A','6RZE_A','3HPR_A','1E4V_A','5EJE_A','1E4Y_A','3X2S_A','6HAP_A','6HAM_A','4K46_A','3GMT_A','4PZL_A')
 ```
 ```{r}
-head (blast$hit.tbl)
+#head (blast$hit.tbl)
 ```
 
 The "top hits" are in the `hits` object. Now we can download these to our computer. Put these in a sub-folder (directory) called "pdbs" and we use gzip to speed things up.
@@ -156,8 +158,8 @@ pdbs
 
 We could view these in R with **bio3dview** `view.pdbs()` function. 
 ```{r}
-library(bio3dview)
-view.pdbs(pdbs, colorScheme = "residue")
+#library(bio3dview)
+#view.pdbs(pdbs, colorScheme = "residue")
 ```
 
 ## PCA
