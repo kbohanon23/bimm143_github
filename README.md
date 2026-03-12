@@ -22,4 +22,4 @@ _Using R and Other Tools for Bioinformatics Analysis_
 - Class 16 [Essential UNIX for bioinformatics](class16/class16.md)
 - Class 17 [Analyzing sequencing data in the cloud](hw17/hw17.md)
 - Class 18 [Mini Project: Investigating Pertussis Resurgence](class18/class18.md)
-- Class 19 [Mini Project: Cancer Mutation Analysis]()
+- Class 19 [Mini Project: Cancer Mutation Analysis](class19/class19.md)
