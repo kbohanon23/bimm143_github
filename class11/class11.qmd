@@ -1,0 +1,186 @@
+---
+title: "Class 11: AlphaFold"
+author: "Kiana Bohanon (PID: A17802316)"
+format: pdf
+toc: TRUE
+---
+
+## Background
+
+We saw last day that the main repository for biomolecular strcuture (the PDB database) only has ~250,000 entries.
+
+UniProtKB (the main protein sequence database) has over 200 million entries!
+
+## AlphaFold
+
+In this hands on session we will utilize AlphaFold to predict protein structure from sequence (Jumper et al. 2021).
+
+Without the aid of such approaches, it can take years of expensive lab work to determine the structure of just one protien. With ALphaFold we can now accurately compute a typical protein structure in as little as 10 minutes.
+
+## The EBI AlphaFold database
+
+The EBI AlphaFold database contains lots of computed structure models. It is increasingly likely that the structure you are interested in is already in the database. 
+
+There are 3 major outputs from AlphaFold.
+
+1. A model of structure in **PDB** format.
+2. A **plDDT score** that tells us how confident the model is for a given residue in your protein (high values are good, above 70).
+3. A **PAE score** that tells us about protein packing quality.
+
+If you can't find a matching entry for the sequence you are interested in AFDB you can run AlphaFold yourself...
+
+## Running AlphaFold
+
+We will use ColabFold to run AlphaFold on our sequence <https://colab.research.google.com/github/sokrypton/ColabFold/blob/main/AlphaFold2.ipynb>
+
+
+## Interpreting Results
+
+Custom analysis of resulting models 
+
+We can read all the AlphaFold results into R and do more quantitative analysis than just viewing the structures in Mol-star:
+
+Read all the PDB models:
+```{r}
+library(bio3d)
+p <- read.pdb("hivpr_23119/hivpr_23119_unrelaxed_rank_004_alphafold2_multimer_v3_model_2_seed_000.pdb")
+```
+
+```{r}
+pdb_files <- list.files("hivpr_23119/", pattern=".pdb", full.names=TRUE)
+```
+
+```{r}
+pdbs <- pdbaln(pdb_files, fit=TRUE, exefile="msa")
+```
+
+How similar or different are my models?
+```{r}
+rd <- rmsd(pdbs, fit=T)
+range(rd)
+
+library(pheatmap)
+
+colnames(rd) <- paste0("m",1:5)
+rownames(rd) <- paste0("m",1:5)
+pheatmap(rd)
+```
+
+Plot pLDDT values across all models:
+```{r}
+# Read a reference PDB structure
+pdb <- read.pdb("1hsg")
+```
+
+```{r}
+plotb3(pdbs$b[1,], typ="l", lwd=2, sse=pdb)
+points(pdbs$b[2,], typ="l", col="red")
+points(pdbs$b[3,], typ="l", col="blue")
+points(pdbs$b[4,], typ="l", col="darkgreen")
+points(pdbs$b[5,], typ="l", col="orange")
+abline(v=100, col="gray")
+```
+Improving the superposition/fitting of our models:
+```{r}
+core <- core.find(pdbs)
+core.inds <- print(core, vol=0.5)
+xyz <- pdbfit(pdbs, core.inds, outpath="corefit_structures")
+
+```
+
+Examining the RMSF between positions of the structure. RMSF is used as a measure of conformational variance along the structure:
+```{r}
+rf <- rmsf(xyz)
+
+plotb3(rf, sse=pdb)
+abline(v=100, col="gray", ylab="RMSF")
+```
+We can see that the first chain is very similar across different models, but the second chain is more variable, which was also visualized in Mol. 
+
+## Predicted Alignment Error for Domains
+
+AlphaFold produces an output called **Predicted Aligned Error (PAE)** which is independent of the 3D structure. 
+```{r}
+library(jsonlite)
+# Listing of all PAE JSON files
+pae_files <- list.files("hivpr_23119/",
+                        pattern=".*model.*\\.json",
+                        full.names = TRUE)
+pae1 <- read_json(pae_files[1],simplifyVector = TRUE)
+pae5 <- read_json(pae_files[5],simplifyVector = TRUE)
+
+attributes(pae1)
+```
+
+```{r}
+# Per-residue pLDDT scores 
+#  same as B-factor of PDB..
+head(pae1$plddt)
+pae1$max_pae
+pae5$max_pae
+```
+
+We can plot N by N (where N is the number of residues):
+```{r}
+plot.dmat(pae1$pae, 
+          xlab="Residue Position (i)",
+          ylab="Residue Position (j)")
+```
+```{r}
+plot.dmat(pae5$pae, 
+          xlab="Residue Position (i)",
+          ylab="Residue Position (j)",
+          grid.col = "black",
+          zlim=c(0,30))
+```
+Same plot, but using the same data range as the plot for model 5:
+```{r}
+plot.dmat(pae1$pae, 
+          xlab="Residue Position (i)",
+          ylab="Residue Position (j)",
+          grid.col = "black",
+          zlim=c(0,30))
+```
+## Residue Conservation from Alignment File
+```{r}
+aln_file <- list.files("hivpr_23119/",
+                       pattern=".a3m$",
+                        full.names = TRUE)
+aln_file
+```
+```{r}
+aln <- read.fasta(aln_file[1], to.upper = TRUE)
+```
+How many sequences are in this alignment:
+```{r}
+dim(aln$ali)
+
+```
+Scoring residue conservation in the alignment with the `conserv()` function.
+```{r}
+sim <- conserv(aln)
+plotb3(sim[1:99], sse=trim.pdb(pdb, chain="A"),
+       ylab="Conservation Score")
+```
+Note the conserved Active Site residues D25, T26, G27, A28, which we can see if we generate a consensus sequence with a high cutoff value:
+```{r}
+con <- consensus(aln, cutoff = 0.9)
+con$seq
+```
+We can view these functionally important sites by mapping the conservation score to the Occupancy column of a PDB file to view in programs like MolStar.
+```{r}
+m1.pdb <- read.pdb(pdb_files[1])
+occ <- vec2resno(c(sim[1:99], sim[1:99]), m1.pdb$atom$resno)
+write.pdb(m1.pdb, o=occ, file="m1_conserv.pdb")
+```
+
+## Current Limitations and Potential Problems
+
+1. Multimer vs single chain predictiions: doesn't always give reasonable results.
+2. Predicting different conformational states: can only predict a single state and is hard to tell which state of a protein will be captured.
+3. Relative positions of domains: if a predicted model has more than one domain, each domain may have high confidence, but the relative positions of the domains may not.
+4. Poorly predicted regions/bugs: there are protein regions that AlphaFold cannot predict.
+
+## Summary
+
+AlphaFold provides biologists with a new technique of structure-gazing without the experimental structure determination work. As the next generation of biologists, it is important we learn how to critically analyze predicted structures, notice new interactions, and examine proteins of interest in sufficient detail to differentiate between what are "bugs" and what are "features". 
