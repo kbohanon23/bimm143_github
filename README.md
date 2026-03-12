@@ -12,7 +12,7 @@ _Introductory material: Working with R_
 _Using R and Other Tools for Bioinformatics Analysis_
   
 - Class 07 [Introduction to machine learning for Bioinformatics](https://github.com/kbohanon23/bimm143_github/blob/main/class07/class07.md)
-- Class 08 [Breast Cancer Mini Project](https://github.com/kbohanon23/bimm143_github/blob/main/class08_miniproject/class08miniproject.md)
+- Class 08 [Breast Cancer Mini Project](https://github.com/kbohanon23/bimm143_github/blob/f9315422678266b4e33e2a2035756345cdf5e097/class08_miniproject/class08miniproject.md)
 - Class 09 [Candy Mini-Project]()
 - Class 10 [Structural Bioinformatics (pt1)]()
 - Class 11 [Structural Bioinformatics (pt2. Focus on new AlphaFold2)]()
