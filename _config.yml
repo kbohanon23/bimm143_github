@@ -1,8 +1,1 @@
-# Jekyll theme configuration
-theme: jekyll-theme-midnight
-
-# Markdown processor
-markdown: kramdown
-
-# Permalink style
-permalink: pretty
+theme: jekyll-theme-architect
