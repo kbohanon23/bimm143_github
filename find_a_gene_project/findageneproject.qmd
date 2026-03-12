@@ -1,0 +1,48 @@
+---
+title: "Find A Gene Project"
+format: html
+---
+
+```{r}
+library(bio3d)
+
+aln <- read.fasta("dynamin_alignment.fasta")
+
+id <- seqidentity(aln)
+
+id_matrix <- as.matrix(id)
+
+heatmap(id_matrix,
+        symm = TRUE,
+        margins = c(8,8),
+        col = colorRampPalette(c("yellow","darkorange","red"))(50))
+
+```
+
+```{r}
+apply(id_matrix, 1, mean)
+```
+
+```{r}
+library(bio3d)
+
+hits <- blast.pdb(aln)
+
+```
+
+```{r}
+head(hits)
+```
+
+```{r}
+library(bio3d)
+pdb.annotate("5A3F_A")
+```
+
+
+
+
+
+
+
+
