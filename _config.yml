@@ -1,0 +1,8 @@
+# Jekyll theme configuration
+
+# Provide your theme choices
+theme: minmal
+# markdown option (none, kramdown, redcarpet, rdiscount)
+markdown: kramdown
+# permalink style
+permalink: pretty
